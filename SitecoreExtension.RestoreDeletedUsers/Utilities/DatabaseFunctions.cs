@@ -76,7 +76,7 @@ namespace SitecoreExtension.RestoreDeletedUsers.Utilities
 
                             if(result != null)
                             {
-                                GetUserArchives(result);
+                                InsertUserIntoTable(result);
                             }
                             else
                             {
@@ -97,7 +97,7 @@ namespace SitecoreExtension.RestoreDeletedUsers.Utilities
             return notFoundList;
         }
 
-        public static void GetUserArchives(SitecoreUserModel user)
+        public static void InsertUserIntoTable(SitecoreUserModel user)
         {
             using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["SitecoreExtensions"].ConnectionString))
             {
