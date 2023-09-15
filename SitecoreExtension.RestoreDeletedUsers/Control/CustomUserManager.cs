@@ -20,6 +20,7 @@ namespace SitecoreExtension.RestoreDeletedUsers
             ShellPage.IsLoggedIn(true);
             base.OnLoad(e);
             Assert.CanRunApplication("Security/User Manager");
+
             ComponentArtGridHandler<User>.Manage(this.Users, (IGridSource<User>)new GridSource<User>(DatabaseFunctions.GetCustomUsers()), this.RebindRequired);
 
             this.Users.LocalizeGrid();
