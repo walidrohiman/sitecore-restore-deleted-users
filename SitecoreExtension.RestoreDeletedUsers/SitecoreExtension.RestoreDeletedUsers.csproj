@@ -238,7 +238,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\DeletedUsersCommand.cs" />
     <Compile Include="Commands\RecycleUserCommand.cs" />
+    <Compile Include="Commands\RestoreUsersCommand.cs" />
+    <Compile Include="Control\DeletedUsers.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Models\SitecoreUserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Control\CustomUserManager.cs">

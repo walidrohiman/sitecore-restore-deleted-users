@@ -15,7 +15,7 @@ namespace SitecoreExtension.RestoreDeletedUsers.Utilities
 {
     public static class DatabaseFunctions
     {
-        public static IEnumerable<User> GetCustomUsers()
+        public static IEnumerable<User> GetUsers()
         {
             var users = UserManager.GetUsers().ToList();
 
@@ -24,6 +24,20 @@ namespace SitecoreExtension.RestoreDeletedUsers.Utilities
             if (archiveUsers.Any())
             {
                 users = users.Where(x => !archiveUsers.Contains(x.Name)).ToList();
+            }
+
+            return users;
+        }
+
+        public static IEnumerable<User> GetDeletedUsers()
+        {
+            var users = UserManager.GetUsers().ToList();
+
+            var archiveUsers = GetUserArchives();
+
+            if (archiveUsers.Any())
+            {
+                users = users.Where(x => archiveUsers.Contains(x.Name)).ToList();
             }
 
             return users;
@@ -115,6 +129,42 @@ namespace SitecoreExtension.RestoreDeletedUsers.Utilities
                     Log.Error($"Error in creating user: {user.UserName} | {ex.Message}", nameof(GetUserArchives));
                 }         
             }
+        }
+
+        public static List<string> RestoreUsers(ListString users)
+        {
+            var notRestoreList = new List<string>();
+
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["SitecoreExtensions"].ConnectionString))
+            {
+                foreach (var username in users)
+                {
+                    MembershipUser user = Membership.GetUser(username);
+
+                    if (user != null)
+                    {
+                        user.IsApproved = true;
+                        Membership.UpdateUser(user);
+
+                        try
+                        {
+                            var query = $"DELETE FROM UserArchives WHERE UserName = '{username}'";
+                            connection.Execute(query);
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Error($"Error in restoring user: {username} | {ex.Message}", nameof(GetUserArchives));
+                            notRestoreList.Add(username);
+                        }
+                    }
+                    else
+                    {
+                        notRestoreList.Add(username);
+                    }                   
+                }
+            }
+
+            return notRestoreList;
         }
     }
 }
