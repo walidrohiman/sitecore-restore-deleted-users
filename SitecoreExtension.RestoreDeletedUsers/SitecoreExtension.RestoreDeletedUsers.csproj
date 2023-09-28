@@ -238,6 +238,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\CustomDelete.cs" />
     <Compile Include="Commands\DeletedUsersCommand.cs" />
     <Compile Include="Commands\RecycleUserCommand.cs" />
     <Compile Include="Commands\RestoreUsersCommand.cs" />

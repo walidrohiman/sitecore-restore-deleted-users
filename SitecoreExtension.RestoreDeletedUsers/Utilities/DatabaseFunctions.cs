@@ -37,10 +37,10 @@ namespace SitecoreExtension.RestoreDeletedUsers.Utilities
 
             if (archiveUsers.Any())
             {
-                users = users.Where(x => archiveUsers.Contains(x.Name)).ToList();
+                return users.Where(x => archiveUsers.Contains(x.Name)).ToList();
             }
 
-            return users;
+            return new List<User>();
         }
 
         public static List<string> GetUserArchives()
@@ -165,6 +165,25 @@ namespace SitecoreExtension.RestoreDeletedUsers.Utilities
             }
 
             return notRestoreList;
+        }
+
+        public static void DeleteUsersPermanently(List<string> users)
+        {
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["SitecoreExtensions"].ConnectionString))
+            {
+                foreach (var username in users)
+                {
+                    try
+                    {
+                        var query = $"DELETE FROM UserArchives WHERE UserName = '{username}'";
+                        connection.Execute(query);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error($"Error in processing username: {username} | {ex.Message}", nameof(GetUserInformation));
+                    }
+                }
+            }
         }
     }
 }

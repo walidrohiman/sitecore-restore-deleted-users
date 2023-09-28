@@ -11,7 +11,7 @@ namespace SitecoreExtension.RestoreDeletedUsers.Commands
     {
         public override void Execute(CommandContext context) => Windows.RunApplication("Security/Deleted Users");
 
-        public override CommandState QueryState(CommandContext context) => !this.IsAdvancedClient() || Sitecore.Context.Database.GetItem("/sitecore/content/Applications/Security/Deleted Users") == null || GetArchivesUsers() ? CommandState.Hidden : base.QueryState(context);
+        public override CommandState QueryState(CommandContext context) => !this.IsAdvancedClient() || Sitecore.Context.Database.GetItem("/sitecore/content/Applications/Security/Deleted Users") == null ? CommandState.Hidden : base.QueryState(context);
 
         private bool GetArchivesUsers()
         {

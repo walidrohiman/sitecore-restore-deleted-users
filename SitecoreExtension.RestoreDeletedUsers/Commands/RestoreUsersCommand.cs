@@ -50,7 +50,7 @@ namespace SitecoreExtension.RestoreDeletedUsers.Commands
                     SheerResponse.Alert("The following users could not be restored:\n\n{0}", stringBuilder.ToString());
                 }
 
-                //AjaxScriptManager.Current.Dispatch("usermanager:restore");
+                AjaxScriptManager.Current.Dispatch("usermanager:refresh");
 
                 if (listString.Count != 1 || !(listString[0] == Context.User.Name))
                 {
