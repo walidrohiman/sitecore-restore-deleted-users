@@ -151,6 +151,12 @@
     <Reference Include="Sitecore.Nexus.Licensing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=9de34fe2109de40c, processorArchitecture=MSIL">
       <HintPath>..\packages\Sitecore.Nexus.Licensing.2.0.6\lib\netstandard2.0\Sitecore.Nexus.Licensing.dll</HintPath>
     </Reference>
+    <Reference Include="Spe, Version=6.4.0.16859, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Spe.6.4.0\lib\net452\Spe.dll</HintPath>
+    </Reference>
+    <Reference Include="Spe.Abstractions, Version=6.4.0.16853, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Spe.Abstractions.6.4.0\lib\net452\Spe.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="sysglobl" />
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -170,6 +176,7 @@
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Linq" />
+    <Reference Include="System.Management.Automation, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
     </Reference>
@@ -242,6 +249,7 @@
     <Compile Include="Commands\DeletedUsersCommand.cs" />
     <Compile Include="Commands\RecycleUserCommand.cs" />
     <Compile Include="Commands\RestoreUsersCommand.cs" />
+    <Compile Include="Commands\RestoreUserWithSpe.cs" />
     <Compile Include="Control\DeletedUsers.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -253,9 +261,11 @@
     <Compile Include="Utilities\DatabaseFunctions.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="App_Config\SitecoreExtension.RestoreDeletedUsers.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
