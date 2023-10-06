@@ -17,7 +17,7 @@ namespace SitecoreExtension.RestoreDeletedUsers.Commands
         public override void Execute(CommandContext context)
         {
             Assert.ArgumentNotNull((object)context, nameof(context));
-            ContinuationManager.Current.Start((ISupportsContinuation)this, "Run", new ClientPipelineArgs(new NameValueCollection(){}));
+            ContinuationManager.Current.Start(this, "Run", new ClientPipelineArgs(new NameValueCollection(){}));
         }
 
         protected static void Run(ClientPipelineArgs args)
