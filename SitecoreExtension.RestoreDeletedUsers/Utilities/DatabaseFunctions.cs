@@ -54,7 +54,7 @@ namespace SitecoreExtension.RestoreDeletedUsers.Utilities
                     var query = $"SELECT * FROM UserArchives";
                     var result = connection.Query<SitecoreUserModel>(query);
 
-                    foreach(var user in result)
+                    foreach (var user in result)
                     {
                         listUserName.Add(user.UserName);
                     }
@@ -79,16 +79,16 @@ namespace SitecoreExtension.RestoreDeletedUsers.Utilities
                     try
                     {
                         MembershipUser user = Membership.GetUser(username);
-                        
-                        if(user != null)
+
+                        if (user != null)
                         {
                             user.IsApproved = false;
                             Membership.UpdateUser(user);
 
-                            var query = $"SELECT * FROM aspnet_Users WHERE UserName = '{username}'";
-                            var result = connection.QueryFirst<SitecoreUserModel>(query);
+                            var query = $"SELECT * FROM aspnet_Users WHERE UserName = @UserName";
+                            var result = connection.QueryFirst<SitecoreUserModel>(query, new { UserName = username });
 
-                            if(result != null)
+                            if (result != null)
                             {
                                 InsertUserIntoTable(result);
                             }
@@ -103,7 +103,7 @@ namespace SitecoreExtension.RestoreDeletedUsers.Utilities
                     }
                     catch (Exception ex)
                     {
-                        Log.Error($"Error in processing username: {username} | {ex.Message}", nameof(GetUserInformation));
+                        Log.Error($"Error in processing username {ex.Message}", nameof(GetUserInformation));
                     }
                 }
             }
@@ -124,10 +124,10 @@ namespace SitecoreExtension.RestoreDeletedUsers.Utilities
 
                     connection.Execute(query, user);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    Log.Error($"Error in creating user: {user.UserName} | {ex.Message}", nameof(GetUserArchives));
-                }         
+                    Log.Error($"Error in creating user {ex.Message}", nameof(GetUserArchives));
+                }
             }
         }
 
@@ -148,19 +148,19 @@ namespace SitecoreExtension.RestoreDeletedUsers.Utilities
 
                         try
                         {
-                            var query = $"DELETE FROM UserArchives WHERE UserName = '{username}'";
-                            connection.Execute(query);
+                            var query = $"DELETE FROM UserArchives WHERE UserName = @UserName";
+                            connection.Execute(query, new { UserName = username });
                         }
                         catch (Exception ex)
                         {
-                            Log.Error($"Error in restoring user: {username} | {ex.Message}", nameof(GetUserArchives));
+                            Log.Error($"Error in restoring user {ex.Message}", nameof(GetUserArchives));
                             notRestoreList.Add(username);
                         }
                     }
                     else
                     {
                         notRestoreList.Add(username);
-                    }                   
+                    }
                 }
             }
 
@@ -175,12 +175,12 @@ namespace SitecoreExtension.RestoreDeletedUsers.Utilities
                 {
                     try
                     {
-                        var query = $"DELETE FROM UserArchives WHERE UserName = '{username}'";
-                        connection.Execute(query);
+                        var query = $"DELETE FROM UserArchives WHERE UserName = @UserName";
+                        connection.Execute(query, new { UserName = username });
                     }
                     catch (Exception ex)
                     {
-                        Log.Error($"Error in processing username: {username} | {ex.Message}", nameof(GetUserInformation));
+                        Log.Error($"Error in processing username {ex.Message}", nameof(GetUserInformation));
                     }
                 }
             }
